@@ -1,0 +1,3 @@
+patient_id,tumor_bam,tumor_bai,normal_bam,normal_bai,tumor_sample_name,normal_sample_name
+Pt1,bams/Pt1-sorted.bam-rmdup.bam,bams/Pt1-sorted.bam-rmdup.bam.bai,bams/Pt1-Normal-sorted.bam-rmdup.bam,bams/Pt1-Normal-sorted.bam-rmdup.bam.bai,Pt1,Pt1-Normal
+Pt2,bams/Pt2-sorted.bam-rmdup.bam,bams/Pt2-sorted.bam-rmdup.bam.bai,bams/Pt2-Normal-sorted.bam-rmdup.bam,bams/Pt2-Normal-sorted.bam-rmdup.bam.bai,Pt2,Pt2-Normal
