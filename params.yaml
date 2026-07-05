@@ -1,0 +1,55 @@
+# =============================================================================
+# params.yaml
+# Fill in the paths on the right of each colon with YOUR actual file paths.
+# Lines starting with # are comments — ignored by Nextflow, just notes for you.
+# Run with:
+#   nextflow run main.nf -params-file params.yaml -resume
+# =============================================================================
+
+# ---- Your sample sheet (tumor/normal BAM pairs) ----------------------------
+samplesheet: samplesheet.csv          # <- point this at your edited CSV
+
+# ---- Reference genome --------------------------------------------------
+# Must be the SAME reference you used for BWA-MEM alignment.
+# fasta_fai and fasta_dict are optional — if omitted, the pipeline assumes
+# they sit next to the fasta as <fasta>.fai and <fasta minus extension>.dict
+fasta: /path/to/hg38.fa
+# fasta_fai: /path/to/reference/Homo_sapiens_assembly38.fasta.fai
+# fasta_dict: /path/to/reference/Homo_sapiens_assembly38.dict
+
+# ---- WES target regions -----------------------------------------------
+# .interval_list or .bed covering your exome capture kit's target regions
+# (ideally with some padding, e.g. 100bp, already added)
+intervals: /path/to/HyperExomeV2_capture_targets.bed
+
+# Manta/Strelka2 need a SEPARATE bgzip+tabix'd BED (not the .interval_list above).
+# Prepare once with:
+#   sort -k1,1 -k2,2n targets.bed | bgzip -c > targets.bed.gz
+#   tabix -p bed targets.bed.gz
+# OPTIONAL — comment out to run Manta/Strelka2 with --exome only, no --callRegions
+#call_regions_bed: /path/to/targets/targets.bed.gz
+
+# ---- BQSR known sites ---------------------------------------------------
+# List of VCFs used by BaseRecalibrator. Typically dbSNP + Mills indels.
+# Each VCF needs a matching index (.tbi or .idx) sitting right next to it.
+known_sites:
+  - /path/to/hg38_v0_Homo_sapiens_assembly38.dbsnp138.vcf.gz
+  - /path/to/hg38_v0_Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+
+# ---- Mutect2 resources ---------------------------------------------------
+# gnomAD "af-only" VCF, used for germline filtering + contamination estimate
+germline_resource: /path/to/somatic-hg38_af-only-gnomad.hg38.vcf.gz
+
+# Panel of normals — OPTIONAL. If you don't have one, comment this line out
+# (put a # in front) or delete it entirely; Mutect2 will just run without it.
+#pon: /path/to/resources/1000g_pon.hg38.vcf.gz
+
+# ---- Funcotator ------------------------------------------------------------
+# Data source folder downloaded via:
+#   gatk FuncotatorDataSourceDownloader --somatic --validate-integrity
+funcotator_sources: /path/to//funcotator_dataSources.v1.7.20200521s
+funcotator_ref_version: hg38        # hg19 or hg38 — must match your fasta
+funcotator_output_format: MAF       # MAF or VCF
+
+# ---- Output location --------------------------------------------------
+outdir: results
